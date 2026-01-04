@@ -40,7 +40,8 @@ class TodoApp {
         // Filter events
         this.filterBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                this.setFilter(e.target.dataset.filter);
+                const filterValue = e.currentTarget.dataset.filter;
+                this.setFilter(filterValue);
             });
         });
 
@@ -277,11 +278,14 @@ class TodoApp {
         
         let current = currentValue;
         const timer = setInterval(() => {
-            current += increment;
-            element.textContent = current;
+            if ((increment > 0 && current < newValue) || (increment < 0 && current > newValue)) {
+                current += increment;
+                element.textContent = current;
+            }
             
             if (current === newValue) {
                 clearInterval(timer);
+                element.textContent = newValue;
                 element.style.animation = 'pulse 0.3s ease-out';
                 setTimeout(() => {
                     element.style.animation = '';
